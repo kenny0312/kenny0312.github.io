@@ -1,17 +1,25 @@
-# kenny0312.github.io
+<div align="center">
 
-Personal portfolio — [kenny0312.github.io](https://kenny0312.github.io)
+# Kenny Qiu — personal site
 
-One hand-built HTML file. No frameworks, no build step, no external dependencies.
+### [▶&nbsp;&nbsp;kenny0312.github.io](https://kenny0312.github.io)
 
-## Editing
+<sub>ML/AI engineer · I build agent systems that make it to production.</sub>
 
-Everything lives in `index.html`. Two placeholders are marked with `EDIT-ME` comments:
+<br/><br/>
 
-- **Education line** (About section) — degree program and expected graduation
-- **LinkedIn URL** (Contact section)
+<a href="https://kenny0312.github.io"><img src="docs/preview.png" alt="kenny0312.github.io — portfolio hero" width="100%" /></a>
 
-## Deploying
+</div>
 
-Pushed to the `main` branch of this repo, GitHub Pages serves it automatically at
-https://kenny0312.github.io (Settings → Pages → Deploy from branch → `main`).
+<br/>
+
+One hand-built HTML file — no frameworks, no build step, no trackers. Push to `main` and GitHub Pages ships it.
+
+**Editing:** everything lives in [`index.html`](index.html). One placeholder remains, marked with an `EDIT-ME` comment — the degree line in the About section.
+
+<br/>
+
+<div align="center">
+<sub>See also: <a href="https://github.com/kenny0312/social-video-insights">SocialLens</a> — a social-video insights demo · <a href="https://github.com/kenny0312/videosense-agent">VideoSense Agent</a> — a conversational agent over your video library</sub>
+</div>
