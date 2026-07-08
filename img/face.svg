@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="face_detect — real-time face recognition in video">
+  <defs>
+    <linearGradient id="acc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a5b4fc"/>
+      <stop offset="1" stop-color="#67e8f9"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy="0" r="1">
+      <stop offset="0" stop-color="#6366f1" stop-opacity=".28"/>
+      <stop offset=".65" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.2" fill="#ffffff" opacity=".05"/>
+    </pattern>
+    <clipPath id="frame"><rect width="1200" height="300" rx="18"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="300" fill="#0a0e19"/>
+    <rect width="1200" height="300" fill="url(#dots)"/>
+    <ellipse cx="600" cy="-40" rx="700" ry="250" fill="url(#glow)"/>
+
+    <g transform="translate(72,0)">
+      <rect x="0" y="74" width="150" height="26" rx="13" fill="none" stroke="#67e8f9" stroke-opacity=".5"/>
+      <text x="75" y="91" text-anchor="middle" font-family="ui-monospace,'Cascadia Code',Consolas,monospace" font-size="11" font-weight="600" letter-spacing="1.5" fill="#67e8f9">COMPUTER VISION</text>
+      <text x="0" y="162" font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" font-size="42" font-weight="800" fill="#e8ecf4">Know every face</text>
+      <text x="0" y="212" font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" font-size="42" font-weight="800" fill="url(#acc)">in the frame.</text>
+      <text x="2" y="250" font-family="ui-monospace,'Cascadia Code',Consolas,monospace" font-size="13" fill="#8a94a8">YOLOv8 &#183; MTCNN &#183; FaceNet</text>
+    </g>
+
+    <!-- detection box over a stylized face + embedding vector -->
+    <g transform="translate(838,58)">
+      <!-- video frame -->
+      <rect x="0" y="0" width="200" height="184" rx="12" fill="#101728" stroke="#ffffff" stroke-opacity=".1"/>
+      <!-- stylized face -->
+      <circle cx="88" cy="92" r="40" fill="none" stroke="#ffffff" stroke-opacity=".28" stroke-width="2"/>
+      <circle cx="74" cy="84" r="4" fill="#ffffff" fill-opacity=".4"/>
+      <circle cx="102" cy="84" r="4" fill="#ffffff" fill-opacity=".4"/>
+      <path d="M74 108 Q88 118 102 108" fill="none" stroke="#ffffff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>
+      <!-- detection bounding box + corner ticks -->
+      <rect x="44" y="44" width="88" height="96" rx="4" fill="none" stroke="url(#acc)" stroke-width="2.5"/>
+      <g stroke="#67e8f9" stroke-width="3" stroke-linecap="round">
+        <path d="M44 58 L44 48 L54 48"/><path d="M122 48 L132 48 L132 58"/>
+        <path d="M44 126 L44 136 L54 136"/><path d="M122 136 L132 136 L132 126"/>
+      </g>
+      <rect x="44" y="30" width="52" height="14" rx="3" fill="#67e8f9"/>
+      <text x="70" y="41" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" font-weight="700" fill="#0a0e19">face 0.98</text>
+      <!-- embedding vector chips -->
+      <g>
+        <text x="152" y="60" font-family="ui-monospace,monospace" font-size="9" fill="#8a94a8">embed</text>
+        <rect x="152" y="70" width="34" height="8" rx="4" fill="#a5b4fc" opacity=".9"/>
+        <rect x="152" y="84" width="26" height="8" rx="4" fill="#a5b4fc" opacity=".65"/>
+        <rect x="152" y="98" width="38" height="8" rx="4" fill="#67e8f9" opacity=".85"/>
+        <rect x="152" y="112" width="22" height="8" rx="4" fill="#67e8f9" opacity=".6"/>
+        <rect x="152" y="126" width="30" height="8" rx="4" fill="#a5b4fc" opacity=".75"/>
+      </g>
+    </g>
+  </g>
+
+  <rect x=".5" y=".5" width="1199" height="299" rx="18" fill="none" stroke="url(#acc)" stroke-opacity=".35"/>
+</svg>

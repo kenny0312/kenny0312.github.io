@@ -25,948 +25,194 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kenny0312.github.io/">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/180679101?v=4">
-<meta name="theme-color" content="#0a0e19">
+<meta name="theme-color" content="#FAF8F5">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23818cf8'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%230a0e19'/%3E%3Crect x='2' y='2' width='60' height='60' rx='12' fill='none' stroke='url(%23g)' stroke-width='3'/%3E%3Ctext x='32' y='43' font-family='system-ui,sans-serif' font-size='27' font-weight='700' fill='url(%23g)' text-anchor='middle'%3EKQ%3C/text%3E%3C/svg%3E">
 <style>
   :root{
-    --bg: #0a0e19;
-    --surface: rgba(255,255,255,.04);
-    --surface-2: rgba(255,255,255,.06);
-    --border: rgba(255,255,255,.09);
-    --border-strong: rgba(255,255,255,.16);
-    --text: #e8ecf4;
-    --sub: #c3cdde;
-    --muted: #94a3b8;
-    --faint: #8a94a8;
-    --acc-a: #a5b4fc;
-    --acc-b: #67e8f9;
-    --grad-text: linear-gradient(100deg, var(--acc-a), var(--acc-b));
-    --grad-btn: linear-gradient(135deg, #4338ca, #0e7490);
-    --radius: 16px;
-    --font-body: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+    --paper: #FAF8F5;
+    --ink: #1F2328;
+    --muted: #57606A;
+    --faint: #8B939E;
+    --accent: #4F46E5;
+    --rule: #E4E0D8;
+    --card-border: #E9E5DD;
   }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html{
-    overflow-x: clip;
-    -webkit-text-size-adjust: 100%;
-  }
-  @media (prefers-reduced-motion: no-preference){
-    html{ scroll-behavior: smooth; }
-  }
-
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
   body{
-    overflow-x: clip;
-    background:
-      radial-gradient(1100px 540px at 50% -140px, rgba(99,102,241,.17), transparent 65%),
-      var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    line-height: 1.65;
-    min-height: 100vh;
-  }
-
-  /* faint dot grid, fades out down the page — texture, not a second glow */
-  .bg-grid{
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.05) 1px, transparent 1.5px);
-    background-size: 30px 30px;
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), transparent 70%);
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), transparent 70%);
-  }
-
-  ::selection{ background: rgba(103,232,249,.28); color: #f2f7ff; }
-
-  a{ color: var(--acc-b); text-decoration: none; }
-  a:hover{ text-decoration: underline; text-underline-offset: 3px; }
-
-  :focus-visible{
-    outline: 2px solid var(--acc-b);
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-
-  .skip-link{
-    position: absolute;
-    left: 1rem; top: -3.5rem;
-    z-index: 100;
-    background: #101728;
-    color: var(--text);
-    border: 1px solid var(--border-strong);
-    border-radius: 8px;
-    padding: .5rem .9rem;
-    transition: top .2s ease;
-  }
-  .skip-link:focus{ top: 1rem; }
-
-  .container{
-    max-width: 1080px;
-    margin-inline: auto;
-    padding-inline: clamp(20px, 5vw, 40px);
-  }
-
-  /* ---------- Nav ---------- */
-  .site-header{
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(10,14,25,.72);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    height: 60px;
-  }
-  .brand{
-    display: inline-flex;
-    align-items: center;
-    gap: .6rem;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: .01em;
-  }
-  .brand:hover{ text-decoration: none; }
-  .brand-mark{
-    display: inline-grid;
-    place-items: center;
-    width: 30px; height: 30px;
-    border-radius: 9px;
-    font-family: var(--font-mono);
-    font-size: .72rem;
-    font-weight: 700;
-    color: #fff;
-    background: var(--grad-btn);
-    border: 1px solid var(--border-strong);
-  }
-  .brand-name{ display: none; font-size: .95rem; }
-  .nav-links{
-    display: flex;
-    align-items: center;
-    gap: clamp(.85rem, 2.5vw, 1.6rem);
-    list-style: none;
-  }
-  .nav-links a{
-    color: var(--muted);
-    font-size: .86rem;
-    font-weight: 500;
-    padding: .3rem .1rem;
-  }
-  .nav-links a:hover{ color: var(--text); text-decoration: none; }
-  .nav-links a.active{
-    color: var(--text);
-    background: var(--grad-text);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .nav-gh{ display: none; }
-  @media (min-width: 720px){
-    .brand-name{ display: inline; }
-    .nav-gh{
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      font-size: .84rem;
-      color: var(--sub);
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: 999px;
-      padding: .35rem .85rem;
-      transition: border-color .2s ease, color .2s ease;
-    }
-    .nav-gh:hover{ text-decoration: none; color: var(--text); border-color: var(--border-strong); }
-  }
-
-  /* ---------- Shared section bits ---------- */
-  section{ scroll-margin-top: 84px; }
-  .section{ padding-block: clamp(64px, 9vw, 104px); }
-  .eyebrow{
-    font-family: var(--font-mono);
-    font-size: .74rem;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--acc-b);
-    margin-bottom: .9rem;
-  }
-  .section-title{
-    font-size: clamp(1.7rem, 3.4vw, 2.35rem);
-    line-height: 1.15;
-    letter-spacing: -.02em;
-    font-weight: 700;
-    margin-bottom: 1.1rem;
-  }
-  .grad{
-    background: var(--grad-text);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: var(--acc-a); /* fallback if clip unsupported */
-  }
-
-  /* ---------- Glass card ---------- */
-  .card{
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-  }
-  .card.lift:hover{
-    transform: translateY(-4px);
-    border-color: rgba(129,140,248,.45);
-    box-shadow: 0 18px 48px -18px rgba(56,132,248,.28);
-  }
-
-  /* ---------- Hero ---------- */
-  .hero{ padding-block: clamp(64px, 10vw, 128px) clamp(56px, 8vw, 96px); }
-  .hero-grid{
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2.5rem;
-    align-items: center;
-  }
-  .hero h1{
-    font-size: clamp(2.15rem, 5.2vw + .6rem, 3.9rem);
-    line-height: 1.08;
-    letter-spacing: -.03em;
-    font-weight: 800;
-    margin-bottom: 1.2rem;
-    max-width: 15ch;
-  }
-  .hero-sub{
-    color: var(--sub);
-    font-size: clamp(1rem, 1.4vw, 1.13rem);
-    max-width: 56ch;
-    margin-bottom: 2rem;
-  }
-  .hero-sub strong{ color: var(--text); font-weight: 600; }
-  .cta-row{
-    display: flex;
-    flex-wrap: wrap;
-    gap: .8rem;
-    align-items: center;
-    margin-bottom: 1.6rem;
-  }
-  .btn{
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    font-weight: 600;
-    font-size: .95rem;
-    padding: .72rem 1.35rem;
-    border-radius: 12px;
-    border: 1px solid transparent;
-    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
-  }
-  .btn:hover{ text-decoration: none; transform: translateY(-2px); }
-  .btn-primary{
-    background: var(--grad-btn);
-    color: #fff;
-    box-shadow: 0 10px 30px -10px rgba(67,56,202,.55);
-  }
-  .btn-primary:hover{ box-shadow: 0 16px 38px -12px rgba(14,116,144,.6); }
-  .btn-ghost{
-    background: var(--surface);
-    border-color: var(--border);
-    color: var(--text);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-  }
-  .btn-ghost:hover{ border-color: var(--border-strong); background: var(--surface-2); }
-  .hero-meta{
-    font-family: var(--font-mono);
-    font-size: .8rem;
-    color: var(--muted);
-    display: flex;
-    flex-wrap: wrap;
-    gap: .4rem 1.4rem;
-  }
-  .hero-meta a{ color: var(--muted); }
-  .hero-meta a:hover{ color: var(--acc-b); }
-
-  .avatar-wrap{
-    justify-self: center;
-    position: relative;
-    width: clamp(150px, 22vw, 220px);
-    aspect-ratio: 1;
-  }
-  .avatar-ring{
-    position: relative;
-    width: 100%; height: 100%;
-    border-radius: 28%;
-    overflow: hidden;
-    border: 1px solid var(--border-strong);
-    background: linear-gradient(150deg, rgba(129,140,248,.22), rgba(34,211,238,.12));
-    display: grid;
-    place-items: center;
-  }
-  /* fallback monogram shows if the remote avatar can't load */
-  .avatar-ring::before{
-    content: "KQ";
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 2rem;
-    color: var(--acc-a);
-  }
-  .avatar-ring img{
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .avatar-badge{
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--sub);
-    background: rgba(13,18,32,.85);
-    border: 1px solid var(--border-strong);
-    border-radius: 999px;
-    padding: .3rem .8rem;
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-  }
-  @media (min-width: 820px){
-    .hero-grid{ grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
-    .avatar-wrap{ justify-self: end; }
-  }
-
-  /* ---------- About ---------- */
-  .about-card{
-    padding: clamp(1.4rem, 3vw, 2.2rem);
-    max-width: 780px;
-  }
-  .about-card p{ color: var(--sub); max-width: 65ch; }
-  .about-card p + p{ margin-top: .9rem; }
-  .edu{
-    margin-top: 1.4rem;
-    padding-top: 1.2rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    flex-wrap: wrap;
-    gap: .4rem .8rem;
-    align-items: baseline;
-    font-size: .95rem;
-  }
-  .edu .label{
-    font-family: var(--font-mono);
-    font-size: .72rem;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .edu .value{ color: var(--text); font-weight: 600; }
-
-  /* ---------- Projects ---------- */
-  .flagship{
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(1.6rem, 3.5vw, 2.6rem);
-    padding: clamp(1.5rem, 3.5vw, 2.6rem);
-    margin-bottom: 1.6rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .flagship::before{
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(165,180,252,.7), rgba(103,232,249,.7), transparent);
-  }
-  @media (min-width: 900px){
-    .flagship{ grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); align-items: start; }
-  }
-  .badge{
-    display: inline-block;
-    font-family: var(--font-mono);
-    font-size: .68rem;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--acc-b);
-    border: 1px solid rgba(103,232,249,.35);
-    background: rgba(103,232,249,.07);
-    border-radius: 999px;
-    padding: .28rem .75rem;
-    margin-bottom: 1rem;
-  }
-  .proj-title{
-    font-size: clamp(1.35rem, 2.4vw, 1.7rem);
-    letter-spacing: -.02em;
-    font-weight: 700;
-    margin-bottom: .5rem;
-  }
-  .proj-title a{ color: inherit; }
-  .proj-title a:hover{ text-decoration: none; }
-  .flagship .proj-title a:hover .grad,
-  .proj-card .proj-title a:hover{ filter: brightness(1.15); }
-  .one-liner{
-    color: var(--sub);
-    font-size: 1.02rem;
-    margin-bottom: 1.1rem;
-    max-width: 52ch;
-  }
-  .feat-list{
-    list-style: none;
-    display: grid;
-    gap: .55rem;
-    margin-bottom: 1.3rem;
-  }
-  .feat-list li{
-    position: relative;
-    padding-left: 1.25rem;
-    color: var(--muted);
-    font-size: .93rem;
-  }
-  .feat-list li::before{
-    content: "";
-    position: absolute;
-    left: 0; top: .52em;
-    width: .5rem; height: .5rem;
-    border-radius: 3px;
-    background: var(--grad-btn);
-  }
-  .feat-list b{ color: var(--sub); font-weight: 600; }
-  .tags{
-    display: flex;
-    flex-wrap: wrap;
-    gap: .45rem;
-    list-style: none;
-  }
-  .tags li{
-    font-family: var(--font-mono);
-    font-size: .72rem;
-    color: var(--acc-a);
-    border: 1px solid rgba(165,180,252,.28);
-    background: rgba(165,180,252,.07);
-    border-radius: 999px;
-    padding: .22rem .7rem;
-    white-space: nowrap;
-  }
-  .repo-link{
-    display: inline-flex;
-    align-items: center;
-    gap: .45rem;
-    margin-top: 1.2rem;
-    font-size: .9rem;
-    font-weight: 600;
-    color: var(--acc-b);
-  }
-  .repo-link svg{ flex: none; }
-  .link-row{ display: flex; flex-wrap: wrap; gap: 0 1.4rem; }
-
-  /* decorative agent-loop console */
-  .console{
-    border: 1px solid var(--border-strong);
-    border-radius: 14px;
-    background: rgba(8,11,20,.75);
-    overflow: hidden;
-    font-family: var(--font-mono);
-    font-size: .78rem;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
     line-height: 1.7;
-    align-self: center;
-    width: 100%;
-    max-width: 460px;
-    justify-self: center;
   }
-  .console-bar{
-    display: flex;
-    align-items: center;
-    gap: .4rem;
-    padding: .55rem .85rem;
-    border-bottom: 1px solid var(--border);
-    background: rgba(255,255,255,.03);
-  }
-  .console-bar span{
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.16);
-  }
-  .console-bar em{
-    font-style: normal;
-    margin-left: .5rem;
-    color: var(--faint);
-    font-size: .7rem;
-    letter-spacing: .08em;
-  }
-  .console-body{ padding: .95rem 1rem 1.1rem; }
-  .console-body p{ margin: 0; overflow-wrap: anywhere; }
-  .c-user{ color: var(--text); margin-bottom: .55rem !important; }
-  .c-step{ color: var(--muted); }
-  .c-step b{ color: var(--acc-a); font-weight: 600; }
-  .c-step::before{ content: "› "; color: var(--faint); }
-  .c-answer{ margin-top: .55rem !important; color: var(--acc-b); }
-  /* live-demo CTA + clickable console teaser */
-  .demo-cta{
-    display: inline-flex; align-items: center; gap: .5rem;
-    margin-top: 1.2rem; padding: .52rem .95rem; border-radius: 10px;
-    font-size: .9rem; font-weight: 650; color: #fff;
-    background: var(--grad-btn); border: 1px solid var(--border-strong);
-    transition: transform .15s ease, box-shadow .2s ease;
-  }
-  .demo-cta:hover{ text-decoration: none; color: #fff; transform: translateY(-2px);
-    box-shadow: 0 14px 34px -14px rgba(14,116,144,.6); }
-  .demo-cta svg{ flex: none; }
-  a.console{ display: block; text-decoration: none; color: inherit;
-    transition: transform .18s ease, border-color .18s ease, box-shadow .2s ease; }
-  a.console:hover{ transform: translateY(-3px); border-color: var(--border-strong);
-    box-shadow: 0 20px 48px -26px rgba(0,0,0,.75); }
-  .console-bar .console-play{ width: auto; height: auto; border-radius: 0; background: none;
-    margin-left: auto; display: inline-flex; align-items: center; gap: .35rem;
-    font-size: .66rem; letter-spacing: .07em; text-transform: uppercase; font-weight: 700; color: var(--acc-b); }
-  .console-bar .console-play svg{ flex: none; }
+  a{ color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+  a:hover{ color: var(--accent); }
+  :focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .container{ max-width: 1020px; margin-inline: auto; padding-inline: clamp(20px, 5vw, 40px); }
 
-  .proj-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-    gap: 1.6rem;
-  }
-  .proj-card{
-    padding: clamp(1.3rem, 2.5vw, 1.8rem);
-    display: flex;
-    flex-direction: column;
-  }
-  .proj-card .proj-title{ font-size: 1.18rem; }
-  .proj-card .one-liner{ font-size: .95rem; }
-  .proj-card .feat-list{ margin-bottom: 1.1rem; }
-  .proj-card .tags{ margin-top: auto; }
+  /* ---------- nav ---------- */
+  header{ border-bottom: 1px solid var(--rule); background: var(--paper); position: sticky; top: 0; z-index: 10; }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height: 64px; }
+  .brand{ font-weight: 700; letter-spacing: .22em; font-size: 15px; text-decoration: none; }
+  .brand:hover{ color: var(--ink); }
+  .nav-links{ display:flex; gap: 1.6rem; list-style:none; font-size: 14px; }
+  .nav-links a{ text-decoration: none; color: var(--muted); letter-spacing: .04em; }
+  .nav-links a:hover{ color: var(--accent); }
 
-  /* ---------- Skills ---------- */
-  .skills-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-    gap: 1.4rem;
-  }
-  .skill-card{ padding: 1.5rem 1.5rem 1.6rem; }
-  .skill-card h3{
-    font-size: .78rem;
-    font-family: var(--font-mono);
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--acc-b);
-    margin-bottom: 1rem;
-  }
-  .skill-card ul{
-    list-style: none;
-    display: grid;
-    gap: .5rem;
-  }
-  .skill-card li{
-    color: var(--sub);
-    font-size: .92rem;
-    padding-left: 1.1rem;
-    position: relative;
-  }
-  .skill-card li::before{
-    content: "";
-    position: absolute;
-    left: 0; top: .58em;
-    width: .4rem; height: .4rem;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--acc-a), var(--acc-b));
-    opacity: .8;
-  }
+  /* ---------- hero ---------- */
+  .hero{ display:grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.75fr); gap: clamp(2rem,6vw,4.5rem); padding-block: clamp(3rem,7vw,5rem) clamp(3.5rem,8vw,6rem); align-items:start; }
+  .hero h1{ font-size: 1.05rem; font-weight: 600; margin-bottom: 1.1rem; }
+  .hero p{ color: var(--ink); margin-bottom: 1rem; max-width: 46ch; }
+  .hero .sub{ color: var(--muted); }
+  .avatar-col{ text-align:center; }
+  .avatar-col img{ width: 100%; max-width: 300px; aspect-ratio: 1; object-fit: cover; border-radius: 6px; display:block; margin-inline:auto; }
+  .social{ display:flex; justify-content:center; gap: 1.3rem; margin-top: .9rem; font-size: 12.5px; letter-spacing:.06em; }
+  .social a{ color: var(--muted); text-decoration:none; }
+  .social a:hover{ color: var(--accent); }
 
-  /* ---------- Contact ---------- */
-  .contact-card{
-    padding: clamp(2rem, 5vw, 3.2rem);
-    text-align: center;
-  }
-  .contact-card .section-title{ margin-bottom: .7rem; }
-  .contact-card > p{
-    color: var(--sub);
-    max-width: 46ch;
-    margin: 0 auto 1.8rem;
-  }
-  .contact-links{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: .8rem;
-  }
-  .contact-email{
-    font-family: var(--font-mono);
-    font-size: .82rem;
-    color: var(--muted);
-    margin-top: 1.4rem;
-    overflow-wrap: anywhere;
-  }
-  .contact-email a{ color: var(--acc-b); }
+  /* ---------- work rows ---------- */
+  .work{ padding-bottom: clamp(3rem,7vw,5rem); }
+  .row{ display:grid; grid-template-columns: minmax(0,.92fr) minmax(0,1.08fr); gap: clamp(1.6rem,4.5vw,3.2rem); align-items:center; padding-block: clamp(2rem,4.5vw,3rem); border-top: 1px solid var(--rule); }
+  .row h2{ font-size: 1.45rem; font-weight: 700; letter-spacing:-.01em; }
+  .row h2 a{ text-decoration:none; }
+  .row h2 a:hover{ color: var(--accent); }
+  .kicker{ font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; font-style: italic; color: var(--faint); margin: .35rem 0 .9rem; }
+  .row p{ color: var(--muted); font-size: .95rem; max-width: 44ch; }
+  .row-links{ display:flex; gap: 1.4rem; margin-top: 1rem; font-size: .9rem; flex-wrap: wrap; }
+  .shot{ border: 1px solid var(--card-border); border-radius: 10px; overflow:hidden; box-shadow: 0 1px 2px rgba(31,35,40,.04); background:#0a0e19; }
+  .shot img{ width:100%; display:block; }
 
-  /* ---------- Footer ---------- */
-  .site-footer{
-    border-top: 1px solid var(--border);
-    padding: 1.6rem 0 2rem;
-  }
-  .footer-inner{
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem 1.5rem;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--faint);
-    font-size: .82rem;
-  }
-  .footer-inner a{ color: var(--faint); }
-  .footer-inner a:hover{ color: var(--acc-b); }
+  /* flagship row */
+  .row.flagship{ grid-template-columns: 1fr; gap: 1.4rem; padding-top: clamp(2.4rem,5vw,3.4rem); }
+  .flagship .flag-head{ display:flex; align-items:baseline; gap:.9rem; flex-wrap:wrap; }
+  .flagship h2{ font-size: 1.8rem; }
+  .tag{ font-size: 10.5px; letter-spacing:.14em; font-weight:700; color: var(--accent); border: 1px solid var(--accent); border-radius: 99px; padding: 2px 10px; text-transform: uppercase; position: relative; top: -3px; }
+  .flagship p{ max-width: 62ch; }
+  .flagship .shot{ margin-top: .4rem; }
 
-  /* ---------- Scroll reveal (JS-enhanced only; page is fully visible without JS) ---------- */
-  @media (prefers-reduced-motion: no-preference){
-    .js .reveal{
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .js .reveal.in{ opacity: 1; transform: none; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    *, *::before, *::after{
-      transition-duration: .01ms !important;
-      animation: none !important;
-    }
-    .btn:hover, .card.lift:hover{ transform: none; }
-  }
-  /* Print / PDF export: never hide un-revealed sections */
-  @media print{
-    .js .reveal{ opacity: 1 !important; transform: none !important; }
+  .section-label{ font-size: 12px; letter-spacing:.18em; text-transform: uppercase; color: var(--faint); padding-top: .6rem; }
+
+  /* ---------- footer ---------- */
+  footer{ background: var(--ink); color: #C9CDD2; margin-top: 2rem; }
+  .foot{ display:flex; justify-content:space-between; align-items:center; padding-block: 1.4rem; font-size: 12.5px; letter-spacing:.08em; flex-wrap:wrap; gap:.8rem; }
+  footer a{ color: #C9CDD2; text-decoration:none; margin-left: 1.4rem; }
+  footer a:hover{ color:#fff; }
+
+  @media (max-width: 760px){
+    .hero{ grid-template-columns: 1fr; }
+    .avatar-col{ order:-1; }
+    .row{ grid-template-columns: 1fr; }
+    .row .shot{ order:-1; }
   }
 </style>
 </head>
 <body>
-<div class="bg-grid" aria-hidden="true"></div>
-<a class="skip-link" href="#main">Skip to content</a>
 
-<header class="site-header">
+<header>
   <nav class="nav container" aria-label="Primary">
-    <a class="brand" href="#top">
-      <span class="brand-mark" aria-hidden="true">KQ</span>
-      <span class="brand-name">Kenny Qiu</span>
-    </a>
+    <a class="brand" href="#">KENGYUAN QIU</a>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about">about</a></li>
+      <li><a href="#work">work</a></li>
+      <li><a href="https://github.com/kenny0312">github</a></li>
     </ul>
-    <a class="nav-gh" href="https://github.com/kenny0312" target="_blank" rel="noopener">
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-      GitHub
-    </a>
   </nav>
 </header>
 
-<main id="main">
-
+<main>
   <!-- ============ HERO ============ -->
-  <section class="hero container" id="top" aria-label="Introduction">
-    <div class="hero-grid">
-      <div>
-        <p class="eyebrow">Kengyuan (Kenny) Qiu · ML/AI Engineer</p>
-        <h1>I build agent systems that <span class="grad">make it to production.</span></h1>
-        <p class="hero-sub">
-          M.S. student at <strong>New York University</strong>. I build
-          <strong>end-to-end agent systems</strong> — multimodal LLMs that reason, call
-          tools, and remember — and I ship the result with tests, telemetry, and
-          cloud deployment, not just a notebook.
-        </p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#projects">View projects</a>
-          <a class="btn btn-ghost" href="https://github.com/kenny0312" target="_blank" rel="noopener">GitHub&nbsp;&#8599;</a>
-        </div>
-        <p class="hero-meta">
-          <span>New York, NY</span>
-          <a href="mailto:kennyqiu0312@gmail.com">kennyqiu0312@gmail.com</a>
-          <a href="https://github.com/kenny0312" target="_blank" rel="noopener">github.com/kenny0312</a>
-        </p>
-      </div>
-      <div class="avatar-wrap">
-        <div class="avatar-ring">
-          <img src="data:image/jpeg;base64,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"
-               alt="Portrait of Kengyuan (Kenny) Qiu"
-               width="220" height="220"
-               onerror="this.remove()">
-        </div>
-        <span class="avatar-badge">open to ML/AI roles</span>
+  <section class="hero container" id="about">
+    <div>
+      <h1>Hey there! I'm Kenny. 👋</h1>
+      <p>I build <a href="#work">end-to-end AI agent systems</a> — multimodal LLMs that reason, call tools, and remember — and I ship them to production with tests, telemetry, and cloud deployment.</p>
+      <p class="sub">I'm currently pursuing my M.S. in Electrical &amp; Computer Engineering at <a href="https://www.nyu.edu" target="_blank" rel="noopener">New York University</a>, based in New York City.</p>
+      <p class="sub">I'm actively seeking ML/AI engineering opportunities with teams building real agent products. Feel free to <a href="mailto:kennyqiu0312@gmail.com">reach out to me!</a></p>
+    </div>
+    <div class="avatar-col">
+      <img src="img/avatar.jpg" alt="Kengyuan (Kenny) Qiu">
+      <div class="social">
+        <a href="mailto:kennyqiu0312@gmail.com">Email</a>
+        <a href="https://github.com/kenny0312" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/kengyuan-qiu-niubi" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </section>
 
-  <!-- ============ ABOUT ============ -->
-  <section class="section container" id="about" aria-labelledby="about-title">
-    <div class="reveal">
-      <p class="eyebrow">About</p>
-      <h2 class="section-title" id="about-title">Own the whole problem.</h2>
-    </div>
-    <div class="card about-card reveal">
-      <p>
-        I'm Kenny, an ML/AI engineer who likes carrying an idea the entire way: read the papers,
-        build the model pipeline, then wire up the API, the tests, and the cloud infrastructure so
-        it runs for real users. My recent work centers on agents that reason over video —
-        multimodal LLMs, retrieval over extracted facts, and the production plumbing that keeps
-        cost and quality observable.
-      </p>
-      <p>
-        Before that, I built computer-vision systems hands-on: visual navigation with
-        self-supervised features and real-time face recognition in video streams.
-      </p>
-      <div class="edu">
-        <span class="label">Education</span>
-        <span class="value">New York University — M.S. student<!-- EDIT-ME: degree program & expected graduation, e.g. "M.S. in Computer Engineering, expected May 2027" --></span>
-      </div>
-    </div>
-  </section>
+  <!-- ============ WORK ============ -->
+  <section class="work container" id="work">
+    <p class="section-label">Selected Work</p>
 
-  <!-- ============ PROJECTS ============ -->
-  <section class="section container" id="projects" aria-labelledby="projects-title">
-    <div class="reveal">
-      <p class="eyebrow">Projects</p>
-      <h2 class="section-title" id="projects-title">Built, tested, <span class="grad">deployed.</span></h2>
-    </div>
-
-    <!-- Flagship -->
-    <article class="card lift flagship reveal">
+    <!-- flagship -->
+    <article class="row flagship">
       <div>
-        <span class="badge">Flagship</span>
-        <h3 class="proj-title">
-          <a href="https://github.com/kenny0312/videosense-agent" target="_blank" rel="noopener"><span class="grad">VideoSense Agent</span></a>
-        </h3>
-        <p class="one-liner">
-          Ask your video library in plain English — it watches, reasons, and answers,
-          with the clip and the chart to prove it.
-        </p>
-        <ul class="feat-list">
-          <li><b>Conversational agent</b> over a personal video library: natural-language Q&amp;A answered with playable clips and charts as evidence.</li>
-          <li><b>Gemini 2.5 multimodal</b> reads the actual video content, not just metadata.</li>
-          <li><b>Agent loop with tool use:</b> SQL over extracted video facts, semantic search (PostgreSQL + pgvector), inline clip playback, chart rendering, web search.</li>
-          <li><b>Production-grade:</b> FastAPI backend on Google Cloud Run, per-request token/cost telemetry piped to BigQuery, cross-session user memory, 146 passing tests.</li>
-        </ul>
-        <ul class="tags" aria-label="Technologies">
-          <li>Python</li><li>FastAPI</li><li>Gemini 2.5</li><li>pgvector</li><li>Cloud Run</li><li>BigQuery</li>
-        </ul>
-        <div class="link-row">
-          <a class="repo-link" href="https://github.com/kenny0312/videosense-agent" target="_blank" rel="noopener">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-            kenny0312/videosense-agent
-          </a>
-          <a class="demo-cta" href="demo/videosense.html">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Watch the live demo
-          </a>
+        <div class="flag-head">
+          <h2><a href="https://github.com/kenny0312/videosense-agent" target="_blank" rel="noopener">VideoSense</a></h2>
+          <span class="tag">Flagship · AI Agent</span>
+        </div>
+        <p class="kicker">Independent project — end-to-end conversational agent for video understanding</p>
+        <p>Ask your video library anything, in plain English. A self-designed probe-and-step agent loop on Gemini 2.5 watches and reasons over raw video content across multi-turn dialogue, then answers with playable clips and charts as evidence. Runs in production on Google Cloud Run with its own MCP tool layer, cross-session memory, cost telemetry, and a τ²-bench-style evaluation system.</p>
+        <div class="row-links">
+          <a href="/demo/videosense.html">Watch the live demo ↗</a>
+          <a href="https://github.com/kenny0312/videosense-agent" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
       </div>
-      <a class="console" href="demo/videosense.html" aria-label="Open the VideoSense live demo — a replayed session with playable clips">
-        <div class="console-bar">
-          <span></span><span></span><span></span>
-          <em>videosense · agent loop</em>
-          <span class="console-play"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Live replay</span>
-        </div>
-        <div class="console-body">
-          <p class="c-user">"When was the dog last at the beach?"</p>
-          <p class="c-step"><b>plan</b> → date-ordered facts: dog + beach</p>
-          <p class="c-step"><b>sql_query</b> → video_facts, ORDER BY date</p>
-          <p class="c-step"><b>semantic_search</b> → pgvector top-k</p>
-          <p class="c-step"><b>clip</b> → inline playback of the moment</p>
-          <p class="c-step"><b>chart</b> → beach visits over time</p>
-          <p class="c-answer">answer + playable clip as evidence ✓</p>
-        </div>
-      </a>
+      <div class="shot"><img src="img/vs.png" alt="VideoSense answering a question about a video library, with a reasoning-steps footer"></div>
     </article>
 
-    <div class="proj-grid">
-      <article class="card lift proj-card reveal">
-        <h3 class="proj-title">
-          <a href="https://kenny0312.github.io/social-video-insights/" target="_blank" rel="noopener">SocialLens</a>
-        </h3>
-        <p class="one-liner">
-          Short-form video in, decisions out — an interactive consumer-insights dashboard,
-          with the real Gemini pipeline that feeds it in the same repo.
-        </p>
-        <ul class="feat-list">
-          <li><b>Dashboard:</b> driver&#8594;evidence drill-down, topic switching, and hand-rolled SVG charts in one dependency-free HTML file.</li>
-          <li><b>Pipeline:</b> analyze.py turns a folder of your own clips into the same insights JSON via Gemini 2.5 structured output.</li>
-        </ul>
-        <ul class="tags" aria-label="Technologies">
-          <li>Gemini 2.5</li><li>Data Viz</li><li>SVG</li><li>Vanilla JS</li>
-        </ul>
-        <div class="link-row">
-          <a class="repo-link" href="https://kenny0312.github.io/social-video-insights/" target="_blank" rel="noopener">Live demo&nbsp;&#8599;</a>
-          <a class="repo-link" href="https://github.com/kenny0312/social-video-insights" target="_blank" rel="noopener">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-            kenny0312/social-video-insights
-          </a>
+    <!-- sociallens -->
+    <article class="row">
+      <div>
+        <h2><a href="https://kenny0312.github.io/social-video-insights/" target="_blank" rel="noopener">SocialLens</a></h2>
+        <p class="kicker">Independent project — consumer-insights dashboard</p>
+        <p>Short-form video in, decisions out. An interactive insights dashboard — sentiment drivers, momentum, personas, clip-level receipts — plus the real Gemini pipeline that generates it from raw footage.</p>
+        <div class="row-links">
+          <a href="https://kenny0312.github.io/social-video-insights/" target="_blank" rel="noopener">Live demo ↗</a>
+          <a href="https://github.com/kenny0312/social-video-insights" target="_blank" rel="noopener">GitHub ↗</a>
         </div>
-      </article>
-
-      <article class="card lift proj-card reveal">
-        <h3 class="proj-title">
-          <a href="https://github.com/kenny0312/DINOv2-GraphNAV" target="_blank" rel="noopener">DINOv2-GraphNAV</a>
-        </h3>
-        <p class="one-liner">
-          Visual navigation via an offline DINOv2 feature graph and online global matching,
-          built for an Embodied AI Visual Navigation Challenge.
-        </p>
-        <ul class="feat-list">
-          <li><b>Offline:</b> DINOv2-B/14 global embeddings + PCA-reduced local patch tokens build a weighted K-NN topological graph from exploration trajectories.</li>
-          <li><b>Online:</b> real-time localization with a lightweight DINOv2-S/14 backbone and FAISS nearest-neighbor search; A*/Dijkstra routing with multi-step next-best-view guidance.</li>
-        </ul>
-        <ul class="tags" aria-label="Technologies">
-          <li>PyTorch</li><li>DINOv2</li><li>FAISS</li><li>Graph Search</li>
-        </ul>
-        <a class="repo-link" href="https://github.com/kenny0312/DINOv2-GraphNAV" target="_blank" rel="noopener">
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-          kenny0312/DINOv2-GraphNAV
-        </a>
-      </article>
-
-      <article class="card lift proj-card reveal">
-        <h3 class="proj-title">
-          <a href="https://github.com/kenny0312/face_detect" target="_blank" rel="noopener">face_detect</a>
-        </h3>
-        <p class="one-liner">
-          Real-time face recognition in video streams with YOLOv8 detection and FaceNet embeddings.
-        </p>
-        <ul class="feat-list">
-          <li><b>Pipeline:</b> MTCNN landmark detection and alignment, ResNet-based FaceNet embeddings, trained with triplet + cross-entropy loss.</li>
-        </ul>
-        <ul class="tags" aria-label="Technologies">
-          <li>YOLOv8</li><li>FaceNet</li><li>MTCNN</li><li>OpenCV</li>
-        </ul>
-        <a class="repo-link" href="https://github.com/kenny0312/face_detect" target="_blank" rel="noopener">
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-          kenny0312/face_detect
-        </a>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============ SKILLS ============ -->
-  <section class="section container" id="skills" aria-labelledby="skills-title">
-    <div class="reveal">
-      <p class="eyebrow">Skills</p>
-      <h2 class="section-title" id="skills-title">The stack I ship with.</h2>
-    </div>
-    <div class="skills-grid">
-      <div class="card lift skill-card reveal">
-        <h3>ML / AI</h3>
-        <ul>
-          <li>LLM agents &amp; tool use</li>
-          <li>Multimodal models (Gemini API)</li>
-          <li>RAG &amp; semantic retrieval (pgvector, FAISS)</li>
-          <li>Computer vision (DINOv2, YOLOv8, FaceNet)</li>
-          <li>PyTorch</li>
-        </ul>
       </div>
-      <div class="card lift skill-card reveal">
-        <h3>Engineering</h3>
-        <ul>
-          <li>Python</li>
-          <li>FastAPI</li>
-          <li>PostgreSQL</li>
-          <li>pytest</li>
-          <li>JavaScript / HTML / CSS</li>
-        </ul>
-      </div>
-      <div class="card lift skill-card reveal">
-        <h3>Cloud &amp; Infra</h3>
-        <ul>
-          <li>Google Cloud (Cloud Run, BigQuery, Cloud Logging)</li>
-          <li>Docker</li>
-          <li>Git / GitHub</li>
-          <li>CI</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+      <div class="shot"><img src="img/sociallens.png" alt="SocialLens dashboard — topic KPIs at a glance"></div>
+    </article>
 
-  <!-- ============ CONTACT ============ -->
-  <section class="section container" id="contact" aria-labelledby="contact-title">
-    <div class="card contact-card reveal">
-      <p class="eyebrow">Contact</p>
-      <h2 class="section-title" id="contact-title">Let's build something <span class="grad">real.</span></h2>
-      <p>
-        I'm based in New York and looking for ML/AI engineering roles in the US.
-        If you want someone who can take a model from paper to production, say hi.
-      </p>
-      <div class="contact-links">
-        <a class="btn btn-primary" href="mailto:kennyqiu0312@gmail.com">Email me</a>
-        <a class="btn btn-ghost" href="https://github.com/kenny0312" target="_blank" rel="noopener">GitHub&nbsp;&#8599;</a>
-        <a class="btn btn-ghost" href="https://www.linkedin.com/in/kengyuan-qiu-niubi" target="_blank" rel="noopener">LinkedIn&nbsp;&#8599;</a>
+    <!-- dinov2 -->
+    <article class="row">
+      <div>
+        <h2><a href="https://github.com/kenny0312/DINOv2-GraphNAV" target="_blank" rel="noopener">DINOv2-GraphNAV</a></h2>
+        <p class="kicker">Personal project — visual navigation</p>
+        <p>Explore once, navigate forever. Builds a topological map from what a robot sees — DINOv2 features over a k-NN graph — then localizes in real time with FAISS and routes with A*/Dijkstra at sub-100&nbsp;ms per query.</p>
+        <div class="row-links">
+          <a href="https://github.com/kenny0312/DINOv2-GraphNAV" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
       </div>
-      <p class="contact-email">kennyqiu0312@gmail.com · New York, NY</p>
-    </div>
+      <div class="shot"><img src="img/dino.svg" alt="DINOv2-GraphNAV — navigate from a feature graph"></div>
+    </article>
+
+    <!-- face_detect -->
+    <article class="row">
+      <div>
+        <h2><a href="https://github.com/kenny0312/face_detect" target="_blank" rel="noopener">face_detect</a></h2>
+        <p class="kicker">Personal project — computer vision</p>
+        <p>Real-time face recognition in video streams: YOLOv8 detection, MTCNN alignment, and FaceNet embeddings trained with triplet + cross-entropy loss.</p>
+        <div class="row-links">
+          <a href="https://github.com/kenny0312/face_detect" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="shot"><img src="img/face.svg" alt="face_detect — know every face in the frame"></div>
+    </article>
   </section>
 </main>
 
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <p>© 2026 Kengyuan (Kenny) Qiu</p>
-    <p>Hand-built — one HTML file, no frameworks. <a href="https://github.com/kenny0312" target="_blank" rel="noopener">github.com/kenny0312</a></p>
+<footer>
+  <div class="foot container">
+    <span>© KENGYUAN QIU 2026</span>
+    <span>
+      <a href="mailto:kennyqiu0312@gmail.com">Email</a>
+      <a href="https://github.com/kenny0312" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/kengyuan-qiu-niubi" target="_blank" rel="noopener">LinkedIn</a>
+    </span>
   </div>
 </footer>
 
-<script>
-(function(){
-  document.documentElement.classList.add('js');
-
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var reveals = document.querySelectorAll('.reveal');
-
-  function revealAll(){ reveals.forEach(function(el){ el.classList.add('in'); }); }
-
-  if (!reduce && 'IntersectionObserver' in window) {
-    var ioFired = false;
-    var io = new IntersectionObserver(function(entries){
-      ioFired = true;
-      entries.forEach(function(e){
-        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
-    reveals.forEach(function(el){ io.observe(el); });
-    window.addEventListener('beforeprint', revealAll);
-    // If no observer callback arrives (background tab, paused rendering), never leave the page blank.
-    setTimeout(function(){ if (!ioFired) revealAll(); }, 2500);
-  } else {
-    revealAll();
-  }
-
-  // Active-section highlight in the nav
-  if ('IntersectionObserver' in window) {
-    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
-    var byId = {};
-    links.forEach(function(a){ byId[a.getAttribute('href').slice(1)] = a; });
-    var so = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (!e.isIntersecting) return;
-        links.forEach(function(a){ a.classList.remove('active'); a.removeAttribute('aria-current'); });
-        var a = byId[e.target.id];
-        if (a) { a.classList.add('active'); a.setAttribute('aria-current', 'true'); }
-      });
-    }, { rootMargin: '-40% 0px -55% 0px' });
-    Object.keys(byId).forEach(function(id){
-      var s = document.getElementById(id);
-      if (s) so.observe(s);
-    });
-  }
-})();
-</script>
 </body>
 </html>
