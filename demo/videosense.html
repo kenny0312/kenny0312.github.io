@@ -40,7 +40,13 @@
   /* ── the replayed session card ── */
   .vsu .pane{position:relative;background:var(--surface);border:1px solid #2b3a5c;border-radius:16px;overflow:hidden;
     box-shadow:0 0 0 1px #16233f, 0 22px 60px -32px #3f7bf0aa;max-width:860px;margin:0 auto}
-  .vsu .phead{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);background:#0e1116}
+  .vsu .phead{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);background:#0e1116;position:relative}
+  /* idea 1 — thin replay progress bar under the header */
+  .vsu .pprog{position:absolute;left:0;bottom:-1px;height:2px;width:0;z-index:1;
+    background:linear-gradient(90deg,var(--accent),var(--accent-soft));box-shadow:0 0 8px #3f7bf088;
+    transition:width .35s ease,opacity .7s ease}
+  .vsu .pprog.fade{opacity:0}
+  .vsu .pprog.snap{transition:none}
   .vsu .phead .plogo{width:22px;height:22px;border-radius:6px;background:var(--accent-dim);display:flex;
     align-items:center;justify-content:center;color:var(--accent-soft)}
   .vsu .phead .pname{font-size:12.5px;font-weight:600}
@@ -55,6 +61,22 @@
   .vsu .replay:hover{color:var(--text);border-color:#3a414c;background:var(--hover)}
   .vsu .pbody{padding:18px 20px 16px;min-height:210px;display:flex;flex-direction:column;transition:min-height .45s ease}
   .vsu .stage{flex:1}
+
+  /* idea 2 — teaser: dim clip placeholders that hint at the proof to come */
+  .vsu .teaser{margin-top:14px}
+  .vsu .teaser.off{display:none}
+  .vsu .tzrow{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  @media(max-width:640px){.vsu .tzrow{grid-template-columns:repeat(3,1fr)}}
+  .vsu .tz{position:relative;aspect-ratio:16/6.5;border-radius:10px;border:1px solid var(--border);overflow:hidden;opacity:.55}
+  .vsu .tz1{background:linear-gradient(135deg,#12203a,#0d3050)}
+  .vsu .tz2{background:linear-gradient(135deg,#101b33,#173a5e)}
+  .vsu .tz3{background:linear-gradient(135deg,#0e1930,#274a72)}
+  .vsu .tz i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#dbe6f5;opacity:.5}
+  .vsu .tz::after{content:"";position:absolute;inset:0;transform:translateX(-100%);
+    background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.07) 50%,transparent 70%);
+    animation:tzshine 2.6s ease-in-out infinite}
+  @keyframes tzshine{60%,100%{transform:translateX(100%)}}
+  .vsu .tcap{text-align:center;font-size:11.5px;color:var(--hint);margin-top:8px}
 
   /* reveal machinery — .gone keeps unrevealed blocks out of layout so the pane
      starts compact (composer on screen) and grows with the answer */
@@ -182,6 +204,7 @@
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v14l8-7z"/><path d="M14 5v14l8-7z"/></svg>
         Skip
       </button>
+      <span class="pprog" id="pprog" aria-hidden="true"></span>
     </div>
     <div class="pbody">
       <div class="stage">
@@ -232,6 +255,14 @@
               <div class="tstep"><span class="sdot" style="background:var(--ok)"></span><span class="snm">show_video · 3 clips to side-channel</span><span class="sms">0.3s</span></div>
             </div>
           </div>
+        </div>
+        <div class="teaser" id="teaser" aria-hidden="true">
+          <div class="tzrow">
+            <div class="tz tz1"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></div>
+            <div class="tz tz2"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></div>
+            <div class="tz tz3"><i><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></i></div>
+          </div>
+          <div class="tcap">12 clips in this library — the matching three surface here, with proof.</div>
         </div>
       </div>
       <div class="composer">
@@ -286,6 +317,8 @@
     function sleep(ms,g){return new Promise(function(r){setTimeout(function(){r(g===gen)},ms)})}
     function show(el){el.classList.remove('gone');void el.offsetWidth;el.classList.remove('hid');el.classList.add('in')}
     function hide(el){el.classList.add('hid');el.classList.add('gone');el.classList.remove('in')}
+    var teaser=$('teaser'), pbar=$('pprog');
+    function setProg(p){pbar.style.width=p+'%'}
 
     function reset(){
       ['qrow','arow','vgrid','vfoot'].forEach(function(id){hide($(id))});
@@ -301,6 +334,9 @@
       $('vfoot').classList.remove('open');
       $('liveLbl').textContent='replay';
       document.querySelectorAll('.vsu video').forEach(function(v){try{v.pause();v.currentTime=0}catch(e){}});
+      teaser.classList.remove('off');
+      pbar.classList.remove('fade');
+      pbar.classList.add('snap'); setProg(0); void pbar.offsetWidth; pbar.classList.remove('snap');
     }
 
     function finalState(){        // reduced motion / instant end-state
@@ -310,8 +346,10 @@
       $('think').style.display='none'; $('livetrace').style.display='none';
       $('headline').innerHTML=HEADLINE_HTML;
       document.querySelectorAll('.hits .hit').forEach(show);
+      teaser.classList.add('off');
       show($('vgrid')); show($('vfoot'));
       $('liveLbl').textContent='done';
+      setProg(100); pbar.classList.add('fade');
     }
 
     async function run(){
@@ -324,11 +362,13 @@
       if(!await sleep(600,g))return;
 
       // 1 · typing
+      setProg(6);
       $('cbox').classList.add('focus');
       var typed=$('typed'); typed.innerHTML='';
       var caret=document.createElement('span'); caret.className='caret'; typed.appendChild(caret);
       for(var i=0;i<Q.length;i++){
         caret.insertAdjacentText('beforebegin', Q[i]);
+        setProg(6+((i+1)/Q.length)*20);
         if(!await sleep(26+Math.random()*22,g))return;
       }
       $('sendBtn').classList.add('ready');
@@ -343,6 +383,7 @@
       $('qbubble').textContent=Q;
       show($('qrow'));
       $('liveLbl').textContent='running';
+      setProg(30);
       if(!await sleep(380,g))return;
 
       // 3 · thinking + live tool steps
@@ -351,12 +392,14 @@
         if(!await sleep(STEPS[s].d,g))return;
         var st=STEPS[s];
         $('thinkLbl').textContent='Working · step '+(s+1);
+        setProg(34+(s+1)*8);
         var row=document.createElement('div'); row.className='tstep';
         row.innerHTML='<span class="sdot" style="background:'+st.c+'"></span><span class="snm">'+st.n+'</span><span class="sms">'+st.ms+'</span>';
         $('livetrace').appendChild(row);
       }
       if(!await sleep(500,g))return;
       $('thinkLbl').textContent='Writing answer…';
+      setProg(70);
       if(!await sleep(550,g))return;
 
       // 4 · stream the headline
@@ -365,6 +408,7 @@
       var hcaret=document.createElement('span'); hcaret.className='caret'; hl.appendChild(hcaret);
       for(var c=0;c<HEADLINE_TXT.length;c++){
         hcaret.insertAdjacentText('beforebegin', HEADLINE_TXT[c]);
+        setProg(70+((c+1)/HEADLINE_TXT.length)*14);
         if(!await sleep(13,g))return;
       }
       hl.innerHTML=HEADLINE_HTML;   // swap in the bold-rendered version
@@ -372,12 +416,15 @@
 
       // 5 · results, videos, footer
       var hits=document.querySelectorAll('.hits .hit');
-      for(var h=0;h<hits.length;h++){ show(hits[h]); if(!await sleep(240,g))return; }
+      for(var h=0;h<hits.length;h++){ show(hits[h]); setProg(84+(h+1)*3); if(!await sleep(240,g))return; }
       if(!await sleep(220,g))return;
+      teaser.classList.add('off');       // placeholder lights up into the real grid
       show($('vgrid'));
+      setProg(97);
       if(!await sleep(420,g))return;
       show($('vfoot'));
       $('liveLbl').textContent='done';
+      setProg(100); pbar.classList.add('fade');
     }
 
     // wiring
